@@ -124,6 +124,9 @@ dist/
 tmp/
 temp/
 
+# Compiled css
+public/*.css
+
 ### VisualStudioCode ###
 .vscode/*
 !.vscode/tasks.json
