@@ -1,26 +1,23 @@
 /* eslint-disable no-console */
-require('dotenv').config();
+import * as dotenv from 'dotenv';
+import express from 'express';
+import mongoose from 'mongoose';
+import cors from 'cors';
+import router from './server/routes/index';
 
-const path = require('path');
-const express = require('express');
-const mongoose = require('mongoose');
-
-const routes = require('./server/routes');
+dotenv.config();
 
 const app = express();
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(cors());
 
-app.set('view engine', 'pug');
-app.set('views', path.join(__dirname, 'templates'));
-app.use(express.static(path.join(__dirname, '../public')));
-
-app.use('/api', routes);
+app.use('/api', router);
 
 mongoose.connect(process.env.DB_KEY, { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;
 db.on('error', (error) => console.error(error));
 db.once('open', () => console.log('db ok'));
 
-app.listen(3000, () => console.log('Server up'));
+app.listen(process.env.PORT || 8080, () => console.log('Server up'));
